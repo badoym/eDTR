@@ -18,13 +18,13 @@
     .page {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      grid-template-rows: repeat(2, auto);
       gap: 5px;
       height: 100%;
+      page-break-after: always;
     }
 
-    .dtr {
-      padding: 4px;
+    .dtr, .instr-copy {
+      padding: 6px;
       font-size: 9px;
       display: flex;
       flex-direction: column;
@@ -83,9 +83,10 @@
       border-top: 1px solid #000;
       padding: 0 15px;
     }
-    .nothing {
-      text-align: center;
-      font-style: italic;
+
+    /* Default: hide instructions on screen */
+    .instructions {
+      display: none;
     }
 
     @media print {
@@ -96,12 +97,19 @@
       @page {
         size: 8.5in 13in landscape;
         margin: 0;
+        page-break-after: always;
       }
       .upload-box,
       button,
       input[type="file"] {
         display: none !important;
       }
+
+      /* Show instructions only on print */
+      .instructions {
+        display: block !important;
+      }
+      
     }
   </style>
 </head>
@@ -113,8 +121,161 @@
     <button class="btn btn-primary" onclick="window.print()">🖨 Print All</button>
   </div>
 
-  <div class="page" id="formsContainer">
-    <!-- 4 forms will be inserted here -->
+  <!-- DTR Forms Container -->
+  <div class="page" id="formsContainer"></div>
+
+  <!-- Instructions Page -->
+  <div class="instructions">
+    <div class="page">
+      <div class="instr-copy">
+        <h4 style="text-align:center; text-decoration: underline;">INSTRUCTIONS</h4>
+        <p style="font-size:12px; text-align:justify;">
+          Civil Service Form 48, after completion, should be filed in the records of the Bureau or Office which submits the 
+          monthly report on Civil Service Form No.3 to the Bureau of Civil Service. <br><br>
+
+          In lieu of the above, court interpreters and stenographers who accompany the judges of the Court of  First Instance 
+          will fill out the daily time reports on this form in triplicate, after which they should be approved by the judge 
+          with whom service has been rendered, or by an officer of the Department of Justice authorized to do so. The original 
+          should be forwarded promptly after the end of the month to the Bureau of Civil Service, thru the  Department of 
+          Justice; the duplicate to be kept in the Department of Justice; and the triplicate, in the office of the Clerk of 
+          Court where service was rendered <br><br>
+
+          In the space provided for the purpose on the other side will be indicated the office hours the employee is required 
+          to observe, as far example,  "Regulardays, 8:00 - 12:00 and 1-4;  Saturdays, 8:00 - 1:00/" <br><br>
+
+          Each chief of a Bureau or Office shall require a daily record of attendance of all the officers and employees under 
+          him entitled to leave of absence or vacation (including teachers) to be kept on the proper form and also a systematic 
+          office record showing for each day all absences from duty from any cause whatever. At the beginning of each month he 
+          shall report to the Commissioner on the proper form of all absence from any cause whatever,including the exact amount 
+          of undertime of each person for each day.  Officers or employees serving i the filed or on the water need not be 
+          required to keep a daily record, but all absences of such employees muyst be included tn the monthly report of changes 
+          and absences. Falsification of time records will render the offending officer or employee lible to summary removal 
+          from the service and criminal prosecution." <br><br>
+          <br><br>
+          <br><br>
+          <br><br>
+          <br><br>
+          <br><br>
+          <br><br>
+          <br><br>
+          <br><br>
+          (Note A record made from memory or sometime subsequent to the occurrence of an event is not reliable. Non- observance 
+          of office hours deprives the employee of the leave privilegies althou he may have rendered overtime service. Where 
+          service rendered outside of the Office for the whole morning or afternoon notation to that office should be made clearly.).
+        </p>
+      </div>
+      <div class="instr-copy">
+        <h4 style="text-align:center; text-decoration: underline;">INSTRUCTIONS</h4>
+        <p style="font-size:12px; text-align:justify;">
+          Civil Service Form 48, after completion, should be filed in the records of the Bureau or Office which submits the 
+          monthly report on Civil Service Form No.3 to the Bureau of Civil Service. <br><br>
+
+          In lieu of the above, court interpreters and stenographers who accompany the judges of the Court of  First Instance 
+          will fill out the daily time reports on this form in triplicate, after which they should be approved by the judge 
+          with whom service has been rendered, or by an officer of the Department of Justice authorized to do so. The original 
+          should be forwarded promptly after the end of the month to the Bureau of Civil Service, thru the  Department of 
+          Justice; the duplicate to be kept in the Department of Justice; and the triplicate, in the office of the Clerk of 
+          Court where service was rendered <br><br>
+
+          In the space provided for the purpose on the other side will be indicated the office hours the employee is required 
+          to observe, as far example,  "Regulardays, 8:00 - 12:00 and 1-4;  Saturdays, 8:00 - 1:00/" <br><br>
+
+          Each chief of a Bureau or Office shall require a daily record of attendance of all the officers and employees under 
+          him entitled to leave of absence or vacation (including teachers) to be kept on the proper form and also a systematic 
+          office record showing for each day all absences from duty from any cause whatever. At the beginning of each month he 
+          shall report to the Commissioner on the proper form of all absence from any cause whatever,including the exact amount 
+          of undertime of each person for each day.  Officers or employees serving i the filed or on the water need not be 
+          required to keep a daily record, but all absences of such employees muyst be included tn the monthly report of changes 
+          and absences. Falsification of time records will render the offending officer or employee lible to summary removal 
+          from the service and criminal prosecution." <br><br>
+          <br><br>
+          <br><br>
+          <br><br>
+          <br><br>
+          <br><br>
+          <br><br>
+          <br><br>
+          <br><br>
+          (Note A record made from memory or sometime subsequent to the occurrence of an event is not reliable. Non- observance 
+          of office hours deprives the employee of the leave privilegies althou he may have rendered overtime service. Where 
+          service rendered outside of the Office for the whole morning or afternoon notation to that office should be made clearly.).
+        </p>
+      </div>
+      <div class="instr-copy">
+        <h4 style="text-align:center; text-decoration: underline;">INSTRUCTIONS</h4>
+        <p style="font-size:12px; text-align:justify;">
+          Civil Service Form 48, after completion, should be filed in the records of the Bureau or Office which submits the 
+          monthly report on Civil Service Form No.3 to the Bureau of Civil Service. <br><br>
+
+          In lieu of the above, court interpreters and stenographers who accompany the judges of the Court of  First Instance 
+          will fill out the daily time reports on this form in triplicate, after which they should be approved by the judge 
+          with whom service has been rendered, or by an officer of the Department of Justice authorized to do so. The original 
+          should be forwarded promptly after the end of the month to the Bureau of Civil Service, thru the  Department of 
+          Justice; the duplicate to be kept in the Department of Justice; and the triplicate, in the office of the Clerk of 
+          Court where service was rendered <br><br>
+
+          In the space provided for the purpose on the other side will be indicated the office hours the employee is required 
+          to observe, as far example,  "Regulardays, 8:00 - 12:00 and 1-4;  Saturdays, 8:00 - 1:00/" <br><br>
+
+          Each chief of a Bureau or Office shall require a daily record of attendance of all the officers and employees under 
+          him entitled to leave of absence or vacation (including teachers) to be kept on the proper form and also a systematic 
+          office record showing for each day all absences from duty from any cause whatever. At the beginning of each month he 
+          shall report to the Commissioner on the proper form of all absence from any cause whatever,including the exact amount 
+          of undertime of each person for each day.  Officers or employees serving i the filed or on the water need not be 
+          required to keep a daily record, but all absences of such employees muyst be included tn the monthly report of changes 
+          and absences. Falsification of time records will render the offending officer or employee lible to summary removal 
+          from the service and criminal prosecution." <br><br>
+          <br><br>
+          <br><br>
+          <br><br>
+          <br><br>
+          <br><br>
+          <br><br>
+          <br><br>
+          <br><br>
+          (Note A record made from memory or sometime subsequent to the occurrence of an event is not reliable. Non- observance 
+          of office hours deprives the employee of the leave privilegies althou he may have rendered overtime service. Where 
+          service rendered outside of the Office for the whole morning or afternoon notation to that office should be made clearly.).
+        </p>
+      </div>
+      <div class="instr-copy">
+        <h4 style="text-align:center; text-decoration: underline;">INSTRUCTIONS</h4>
+        <p style="font-size:12px; text-align:justify;">
+          Civil Service Form 48, after completion, should be filed in the records of the Bureau or Office which submits the 
+          monthly report on Civil Service Form No.3 to the Bureau of Civil Service. <br><br>
+
+          In lieu of the above, court interpreters and stenographers who accompany the judges of the Court of  First Instance 
+          will fill out the daily time reports on this form in triplicate, after which they should be approved by the judge 
+          with whom service has been rendered, or by an officer of the Department of Justice authorized to do so. The original 
+          should be forwarded promptly after the end of the month to the Bureau of Civil Service, thru the  Department of 
+          Justice; the duplicate to be kept in the Department of Justice; and the triplicate, in the office of the Clerk of 
+          Court where service was rendered <br><br>
+
+          In the space provided for the purpose on the other side will be indicated the office hours the employee is required 
+          to observe, as far example,  "Regulardays, 8:00 - 12:00 and 1-4;  Saturdays, 8:00 - 1:00/" <br><br>
+
+          Each chief of a Bureau or Office shall require a daily record of attendance of all the officers and employees under 
+          him entitled to leave of absence or vacation (including teachers) to be kept on the proper form and also a systematic 
+          office record showing for each day all absences from duty from any cause whatever. At the beginning of each month he 
+          shall report to the Commissioner on the proper form of all absence from any cause whatever,including the exact amount 
+          of undertime of each person for each day.  Officers or employees serving i the filed or on the water need not be 
+          required to keep a daily record, but all absences of such employees muyst be included tn the monthly report of changes 
+          and absences. Falsification of time records will render the offending officer or employee lible to summary removal 
+          from the service and criminal prosecution." <br><br>
+          <br><br>
+          <br><br>
+          <br><br>
+          <br><br>
+          <br><br>
+          <br><br>
+          <br><br>
+          <br><br>
+          (Note A record made from memory or sometime subsequent to the occurrence of an event is not reliable. Non- observance 
+          of office hours deprives the employee of the leave privilegies althou he may have rendered overtime service. Where 
+          service rendered outside of the Office for the whole morning or afternoon notation to that office should be made clearly.).
+        </p>
+      </div>
+    </div>
   </div>
 
   <!-- Progress Modal -->
@@ -170,22 +331,18 @@
         let empName = "_____________________";
         let period = "For the month of _____________";
 
-        // Get employee name
         const nameMatch = textContent.match(/Employee\s+(.*?)\s+Position/);
         if (nameMatch) empName = nameMatch[1];
 
-        // Get month/day range
         const periodMatch = textContent.match(/Period\s+([A-Za-z0-9\s\-]+)/);
         if (periodMatch) period = periodMatch[1];
 
-        // Extract year from any date in logs (format: MM/DD/YYYY)
         const yearMatch = textContent.match(/\d{2}\/\d{2}\/(\d{4})/);
         if (yearMatch) {
           const year = yearMatch[1];
-          period = `${period} ${year}`; // append year
-        };
+          period = `${period} ${year}`;
+        }
 
-        // Parse logs
         const rows = textContent.match(/\d{7}\s+\w+\s+\d{2}\/\d{2}\/\d{4}.*?(?=\d{7}|$)/gs) || [];
         let logsByDay = {};
 
@@ -213,110 +370,98 @@
           }
         });
 
-        // Build a single DTR form
         function buildForm() {
-        let rowsHtml = "";
-        let grandTotalMinutes = 0; // total for whole month
+          let rowsHtml = "";
+          let grandTotalMinutes = 0;
 
-        // helper: convert "HH:MM" into total minutes (24hr support)
-        function toMinutes(t, isPM = false) {
-          if (!t) return null;
-          let [h, m] = t.split(":").map(Number);
-          if (isPM && h < 12) h += 12;
-          return h * 60 + m;
-        }
-
-        for (let d = 1; d <= 31; d++) {
-          const log = logsByDay[d] || {};
-
-          let amMinutes = 0, pmMinutes = 0;
-
-          // AM duration
-          if (log.amIn && log.amOut) {
-            const amInMin = toMinutes(log.amIn);
-            const amOutMin = toMinutes(log.amOut);
-            if (amOutMin > amInMin) amMinutes = amOutMin - amInMin;
+          function toMinutes(t, isPM = false) {
+            if (!t) return null;
+            let [h, m] = t.split(":").map(Number);
+            if (isPM && h < 12) h += 12;
+            return h * 60 + m;
           }
 
-          // PM duration
-          if (log.pmIn && log.pmOut) {
-            const pmInMin = toMinutes(log.pmIn, true);
-            const pmOutMin = toMinutes(log.pmOut, true);
-            if (pmOutMin > pmInMin) pmMinutes = pmOutMin - pmInMin;
+          for (let d = 1; d <= 31; d++) {
+            const log = logsByDay[d] || {};
+            let amMinutes = 0, pmMinutes = 0;
+
+            if (log.amIn && log.amOut) {
+              const amInMin = toMinutes(log.amIn);
+              const amOutMin = toMinutes(log.amOut);
+              if (amOutMin > amInMin) amMinutes = amOutMin - amInMin;
+            }
+
+            if (log.pmIn && log.pmOut) {
+              const pmInMin = toMinutes(log.pmIn, true);
+              const pmOutMin = toMinutes(log.pmOut, true);
+              if (pmOutMin > pmInMin) pmMinutes = pmOutMin - pmInMin;
+            }
+
+            const totalMinutes = amMinutes + pmMinutes;
+            grandTotalMinutes += totalMinutes;
+
+            const totHrs = Math.floor(totalMinutes / 60);
+            const totMins = totalMinutes % 60;
+
+            rowsHtml += `
+              <tr>
+                <td>${d}</td>
+                <td>${log.amIn || ''}</td>
+                <td>${log.amOut || ''}</td>
+                <td>${log.pmIn || ''}</td>
+                <td>${log.pmOut || ''}</td>
+                <td>${totHrs || ''}</td>
+                <td>${totMins || ''}</td>
+              </tr>`;
           }
 
-          // total per day
-          const totalMinutes = amMinutes + pmMinutes;
-          grandTotalMinutes += totalMinutes;  // add to monthly total
+          const grandHrs = Math.floor(grandTotalMinutes / 60);
+          const grandMins = grandTotalMinutes % 60;
 
-          const totHrs = Math.floor(totalMinutes / 60);
-          const totMins = totalMinutes % 60;
-
-          rowsHtml += `
-            <tr>
-              <td>${d}</td>
-              <td>${log.amIn || ''}</td>
-              <td>${log.amOut || ''}</td>
-              <td>${log.pmIn || ''}</td>
-              <td>${log.pmOut || ''}</td>
-              <td>${totHrs || ''} ${totMins || ''}</td>
-              <td></td>
-            </tr>`;
+          return `
+            <div class="dtr">
+              <h5 style="text-align:left;font-size:7px;">Civil Service Form No. 48</h5>
+              <h2 style="text-align:center;font-size:11px;">DAILY TIME RECORD</h2>
+              <h4 style="text-align:center;font-size:15px;font-weight: bold;text-decoration: underline;">${empName}</h4>
+              <h4 style="text-align:center;font-size:7px;">Name</h4>
+              <h4 style="text-align:left;font-size:11px;">For the month of <span style="text-decoration: underline;font-size:15px;">${period}</span></h4>
+              <p style="text-align:left;font-size:10px;">Official hours for arrival (Regular days) <br> and departure (Saturdays & Sundays)</p>
+              <table style="margin-top: -15px">
+                <thead>
+                  <tr>
+                    <th rowspan="2">DAY</th>
+                    <th colspan="2">A.M.</th>
+                    <th colspan="2">P.M.</th>
+                    <th colspan="2">UNDERTIME</th>
+                  </tr>
+                  <tr>
+                    <th>Arrival</th>
+                    <th>Departure</th>
+                    <th>Arrival</th>
+                    <th>Departure</th>
+                    <th>Hours</th>
+                    <th>Mins.</th>
+                  </tr>
+                </thead>
+                <tbody>${rowsHtml}</tbody>
+              </table>
+              <p style="text-align:right;font-weight:bold;font-size:13px;">
+                Total: ${grandHrs} hrs ${grandMins} mins
+              </p>
+              <div class="footer">
+                <p>I certify on my honor that the above is a true and correct report of the hours of work performed, record of which was made during the time of arrival at and departure from office.</p>
+              </div>
+              <div class="signature">
+                <span>${empName}</span>
+                <div>Verified as to the prescribed office hours.</div>
+                <div style="margin-top:20px;"><span>In-Charge</span></div>
+              </div>
+            </div>`;
         }
 
-        // compute grand total in hrs + mins
-        const grandHrs = Math.floor(grandTotalMinutes / 60);
-        const grandMins = grandTotalMinutes % 60;
-
-        return `
-          <div class="dtr">
-            <h5 style="text-align:left;font-size:7px;">Civil Service Form No. 48</h5>
-            <h2 style="text-align:center;font-size:11px;">DAILY TIME RECORD</h2>
-            <h4 style="text-align:center;font-size:15px;font-weight: bold;text-decoration: underline;">${empName}</h4>
-            <h4 style="text-align:center;font-size:7px;">Name</h4>
-            <h4 style="text-align:left;font-size:11px;">For the month of <span style="text-decoration: underline;font-size:15px;">${period}</span></h4>
-            <p style="text-align:left;font-size:10px;">Official hours for arrival (Regular days) <br> and departure (Saturdays & Sundays)</p>
-            <table style="margin-top: -15px">
-              <thead>
-                <tr>
-                  <th rowspan="2">DAY</th>
-                  <th colspan="2">A.M.</th>
-                  <th colspan="2">P.M.</th>
-                  <th colspan="2">UNDERTIME</th>
-                </tr>
-                <tr>
-                  <th>Arrival</th>
-                  <th>Departure</th>
-                  <th>Arrival</th>
-                  <th>Departure</th>
-                  <th>Hours</th>
-                  <th>Mins.</th>
-                </tr>
-              </thead>
-              <tbody>${rowsHtml}</tbody>
-            </table>
-            <p style="text-align:right;font-weight:bold;font-size:13px;">
-              Total: ${grandHrs} hrs ${grandMins} mins
-            </p>
-            <div class="footer">
-              <p>I certify on my honor that the above is a true and correct report of the hours of work performed, record of which was made during the time of arrival at and departure from office.</p>
-            </div>
-            <div class="signature">
-              <span>${empName}</span>
-              <div>Verified as to the prescribed office hours.</div>
-              <div style="margin-top:20px;"><span>In-Charge</span></div>
-            </div>
-          </div>`;
-      }
-
-
-
-
-
-        // Generate 4 copies
+        // Generate 4 DTR copies
         formsContainer.innerHTML = buildForm() + buildForm() + buildForm() + buildForm();
 
-        // Hide modal when done
         progressModal.hide();
       };
       fileReader.readAsArrayBuffer(file);
