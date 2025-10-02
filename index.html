@@ -307,8 +307,10 @@
                                 <td>${log.amOut || ''}</td>
                                 <td>${log.pmIn || ''}</td>
                                 <td>${log.pmOut || ''}</td>
-                                <td>${totHrs || ''}</td>
-                                <td>${totMins || ''}</td>
+                                <td>
+                                    ${(totHrs || totMins) ? `${totHrs || ''}:${totMins || ''}` : ''}
+                                </td>
+                                <td></td>
                             </tr>`;
                     }
 
