@@ -215,92 +215,100 @@
 
         // Build a single DTR form
         function buildForm() {
-          let rowsHtml = "";
+        let rowsHtml = "";
+        let grandTotalMinutes = 0; // total for whole month
 
-          // helper: convert "HH:MM" into total minutes (24hr support)
-          function toMinutes(t, isPM = false) {
-            if (!t) return null;
-            let [h, m] = t.split(":").map(Number);
-
-            // auto convert PM to 24h format if needed
-            if (isPM && h < 12) h += 12;
-            return h * 60 + m;
-          }
-
-          for (let d = 1; d <= 31; d++) {
-            const log = logsByDay[d] || {};
-
-            let amMinutes = 0, pmMinutes = 0;
-
-            // AM duration
-            if (log.amIn && log.amOut) {
-              const amInMin = toMinutes(log.amIn);
-              const amOutMin = toMinutes(log.amOut);
-              if (amOutMin > amInMin) amMinutes = amOutMin - amInMin;
-            }
-
-            // PM duration
-            if (log.pmIn && log.pmOut) {
-              const pmInMin = toMinutes(log.pmIn, true);   // force PM format
-              const pmOutMin = toMinutes(log.pmOut, true);
-              if (pmOutMin > pmInMin) pmMinutes = pmOutMin - pmInMin;
-            }
-
-            // total
-            const totalMinutes = amMinutes + pmMinutes;
-            const totHrs = Math.floor(totalMinutes / 60);
-            const totMins = totalMinutes % 60;
-
-            rowsHtml += `
-              <tr>
-                <td>${d}</td>
-                <td>${log.amIn || ''}</td>
-                <td>${log.amOut || ''}</td>
-                <td>${log.pmIn || ''}</td>
-                <td>${log.pmOut || ''}</td>
-                <td>${totHrs || ''}:${totMins || ''}</td>
-                <td></td>
-              </tr>`;
-          }
-
-          return `
-            <div class="dtr">
-              <h5 style="text-align:left;font-size:7px;">Civil Service Form No. 48</h5>
-              <h2 style="text-align:center;font-size:11px;">DAILY TIME RECORD</h2>
-              <h4 style="text-align:center;font-size:15px;font-weight: bold;text-decoration: underline;">${empName}</h4>
-              <h4 style="text-align:center;font-size:7px;">Name</h4>
-              <h4 style="text-align:left;font-size:11px;">For the month of <span style="text-decoration: underline;font-size:15px;">${period}</span></h4>
-              <p style="text-align:left;font-size:10px;">Official hours for arrival (Regular days) <br> and departure (Saturdays & Sundays)</p>
-              <table style="margin-top: -15px">
-                <thead>
-                  <tr>
-                    <th rowspan="2">DAY</th>
-                    <th colspan="2">A.M.</th>
-                    <th colspan="2">P.M.</th>
-                    <th colspan="2">UNDERTIME</th>
-                  </tr>
-                  <tr>
-                    <th>Arrival</th>
-                    <th>Departure</th>
-                    <th>Arrival</th>
-                    <th>Departure</th>
-                    <th>Hours</th>
-                    <th>Mins.</th>
-                  </tr>
-                </thead>
-                <tbody>${rowsHtml}</tbody>
-              </table>
-              <p style="text-align:left;font-weight:bold;font-size:13px;">Total _____________________________________________</p>
-              <div class="footer">
-                <p>I certify on my honor that the above is a true and correct report of the hours of work performed, record of which was made during the time of arrival at and departure from office.</p>
-              </div>
-              <div class="signature">
-                <span>${empName}</span>
-                <div>Verified as to the prescribed office hours.</div>
-                <div style="margin-top:20px;"><span>In-Charge</span></div>
-              </div>
-            </div>`;
+        // helper: convert "HH:MM" into total minutes (24hr support)
+        function toMinutes(t, isPM = false) {
+          if (!t) return null;
+          let [h, m] = t.split(":").map(Number);
+          if (isPM && h < 12) h += 12;
+          return h * 60 + m;
         }
+
+        for (let d = 1; d <= 31; d++) {
+          const log = logsByDay[d] || {};
+
+          let amMinutes = 0, pmMinutes = 0;
+
+          // AM duration
+          if (log.amIn && log.amOut) {
+            const amInMin = toMinutes(log.amIn);
+            const amOutMin = toMinutes(log.amOut);
+            if (amOutMin > amInMin) amMinutes = amOutMin - amInMin;
+          }
+
+          // PM duration
+          if (log.pmIn && log.pmOut) {
+            const pmInMin = toMinutes(log.pmIn, true);
+            const pmOutMin = toMinutes(log.pmOut, true);
+            if (pmOutMin > pmInMin) pmMinutes = pmOutMin - pmInMin;
+          }
+
+          // total per day
+          const totalMinutes = amMinutes + pmMinutes;
+          grandTotalMinutes += totalMinutes;  // add to monthly total
+
+          const totHrs = Math.floor(totalMinutes / 60);
+          const totMins = totalMinutes % 60;
+
+          rowsHtml += `
+            <tr>
+              <td>${d}</td>
+              <td>${log.amIn || ''}</td>
+              <td>${log.amOut || ''}</td>
+              <td>${log.pmIn || ''}</td>
+              <td>${log.pmOut || ''}</td>
+              <td>${totHrs || ''}</td>
+              <td>${totMins || ''}</td>
+            </tr>`;
+        }
+
+        // compute grand total in hrs + mins
+        const grandHrs = Math.floor(grandTotalMinutes / 60);
+        const grandMins = grandTotalMinutes % 60;
+
+        return `
+          <div class="dtr">
+            <h5 style="text-align:left;font-size:7px;">Civil Service Form No. 48</h5>
+            <h2 style="text-align:center;font-size:11px;">DAILY TIME RECORD</h2>
+            <h4 style="text-align:center;font-size:15px;font-weight: bold;text-decoration: underline;">${empName}</h4>
+            <h4 style="text-align:center;font-size:7px;">Name</h4>
+            <h4 style="text-align:left;font-size:11px;">For the month of <span style="text-decoration: underline;font-size:15px;">${period}</span></h4>
+            <p style="text-align:left;font-size:10px;">Official hours for arrival (Regular days) <br> and departure (Saturdays & Sundays)</p>
+            <table style="margin-top: -15px">
+              <thead>
+                <tr>
+                  <th rowspan="2">DAY</th>
+                  <th colspan="2">A.M.</th>
+                  <th colspan="2">P.M.</th>
+                  <th colspan="2">UNDERTIME</th>
+                </tr>
+                <tr>
+                  <th>Arrival</th>
+                  <th>Departure</th>
+                  <th>Arrival</th>
+                  <th>Departure</th>
+                  <th>Hours</th>
+                  <th>Mins.</th>
+                </tr>
+              </thead>
+              <tbody>${rowsHtml}</tbody>
+            </table>
+            <p style="text-align:right;font-weight:bold;font-size:13px;">
+              Total: ${grandHrs} hrs ${grandMins} mins
+            </p>
+            <div class="footer">
+              <p>I certify on my honor that the above is a true and correct report of the hours of work performed, record of which was made during the time of arrival at and departure from office.</p>
+            </div>
+            <div class="signature">
+              <span>${empName}</span>
+              <div>Verified as to the prescribed office hours.</div>
+              <div style="margin-top:20px;"><span>In-Charge</span></div>
+            </div>
+          </div>`;
+      }
+
 
 
 
