@@ -217,13 +217,11 @@
                     const text = await page.getTextContent();
                     text.items.forEach(item => textContent += item.str + ' ');
 
-                    // Update progress
                     let percent = Math.round((i / pdf.numPages) * 100);
                     progressBar.style.width = percent + "%";
                     progressBar.textContent = percent + "%";
                 }
 
-                // Employee info
                 let empName = "_____________________";
                 let period = "For the month of _____________";
 
@@ -246,7 +244,7 @@
                     const parts = r.trim().split(/\s+/);
                     const date = parts[2];
                     const dayNum = parseInt(date.split('/')[1]);
-                    const timeStr = parts[3];
+                    const timeStr = parts[3] + " " + parts[4]; // keep with AM/PM
                     const mode = parts[5];
 
                     if (!logsByDay[dayNum]) logsByDay[dayNum] = { amIn: '', amOut: '', pmIn: '', pmOut: '' };
@@ -260,62 +258,74 @@
 
                     if (mode === "In") {
                         if (hour24 < 12) logsByDay[dayNum].amIn = timeStr;
-                    else logsByDay[dayNum].pmIn = timeStr;
+                        else logsByDay[dayNum].pmIn = timeStr;
                     } else if (mode === "Out") {
                         if (hour24 < 13) logsByDay[dayNum].amOut = timeStr;
                         else logsByDay[dayNum].pmOut = timeStr;
                     }
                 });
 
-                function buildForm() {
-                    let rowsHtml = "";
-                    let grandTotalMinutes = 0;
+                // --- NEW: Helper functions
+                function toMinutes(str) {
+                    if (!str) return null;
+                    let match = str.trim().match(/^(\d{1,2}):(\d{2})(?:\s*(AM|PM))?$/i);
+                    if (!match) return null;
 
-                    function toMinutes(t, isPM = false) {
-                        if (!t) return null;
-                        let [h, m] = t.split(":").map(Number);
-                        if (isPM && h < 12) h += 12;
-                        return h * 60 + m;
+                    let h = parseInt(match[1], 10);
+                    let m = parseInt(match[2], 10);
+                    let ap = match[3] ? match[3].toUpperCase() : null;
+
+                    if (ap === "PM" && h !== 12) h += 12;
+                    if (ap === "AM" && h === 12) h = 0;
+
+                    return h * 60 + m;
+                }
+
+                function computeRowTotal(tr) {
+                    const amIn = tr.querySelector(".amIn").innerText.trim();
+                    const amOut = tr.querySelector(".amOut").innerText.trim();
+                    const pmIn = tr.querySelector(".pmIn").innerText.trim();
+                    const pmOut = tr.querySelector(".pmOut").innerText.trim();
+
+                    let totalMin = 0;
+                    let amInM = toMinutes(amIn), amOutM = toMinutes(amOut);
+                    let pmInM = toMinutes(pmIn), pmOutM = toMinutes(pmOut);
+
+                    if (amInM !== null && amOutM !== null) totalMin += (amOutM - amInM);
+                    if (pmInM !== null && pmOutM !== null) totalMin += (pmOutM - pmInM);
+
+                    if (totalMin > 0) {
+                        const hrs = Math.floor(totalMin / 60);
+                        const mins = totalMin % 60;
+                        tr.querySelector(".total").innerText = `${hrs}:${mins.toString().padStart(2, "0")}`;
+                    } else {
+                        tr.querySelector(".total").innerText = "";
                     }
+                }
 
+                function buildForm(copyIndex) {
+                    let rowsHtml = "";
                     for (let d = 1; d <= 31; d++) {
                         const log = logsByDay[d] || {};
-                        let amMinutes = 0, pmMinutes = 0;
-
-                        if (log.amIn && log.amOut) {
-                            const amInMin = toMinutes(log.amIn);
-                            const amOutMin = toMinutes(log.amOut);
-                            if (amOutMin > amInMin) amMinutes = amOutMin - amInMin;
-                        }
-
-                        if (log.pmIn && log.pmOut) {
-                            const pmInMin = toMinutes(log.pmIn, true);
-                            const pmOutMin = toMinutes(log.pmOut, true);
-                            if (pmOutMin > pmInMin) pmMinutes = pmOutMin - pmInMin;
-                        }
-
-                        const totalMinutes = amMinutes + pmMinutes;
-                        grandTotalMinutes += totalMinutes;
-
-                        const totHrs = Math.floor(totalMinutes / 60);
-                        const totMins = totalMinutes % 60;
-
                         rowsHtml += `
-                            <tr>
+                            <tr data-day="${d}">
                                 <td>${d}</td>
-                                <td>${log.amIn || ''}</td>
-                                <td>${log.amOut || ''}</td>
-                                <td>${log.pmIn || ''}</td>
-                                <td>${log.pmOut || ''}</td>
-                                <td>
-                                    ${(totHrs || totMins) ? `${totHrs || ''}:${totMins || ''}` : ''}
+                                <td class="amIn" contenteditable="true" data-day="${d}" data-field="amIn" data-fulltime="${log.amIn || ''}">
+                                    ${(log.amIn || '')}
                                 </td>
-                                <td></td>
+                                <td class="amOut" contenteditable="true" data-day="${d}" data-field="amOut">
+                                    ${log.amOut || ''}
+                                </td>
+                                <td class="pmIn" contenteditable="true" data-day="${d}" data-field="pmIn">
+                                    ${log.pmIn || ''}
+                                </td>
+                                <td class="pmOut" contenteditable="true" data-day="${d}" data-field="pmOut">
+                                    ${log.pmOut || ''}
+                                </td>
+                                <td class="total"></td>
+                                <td class="remarks" contenteditable="true" data-day="${d}" data-field="remarks"></td>
                             </tr>`;
                     }
-
-                    const grandHrs = Math.floor(grandTotalMinutes / 60);
-                    const grandMins = grandTotalMinutes % 60;
 
                     return `
                         <div class="dtr">
@@ -327,25 +337,25 @@
                             <p style="text-align:left;font-size:10px;">Official hours for arrival (Regular days) <br> and departure (Saturdays & Sundays)</p>
                             <table style="margin-top: -15px">
                                 <thead>
-                                <tr>
-                                    <th rowspan="2">DAY</th>
-                                    <th colspan="2">A.M.</th>
-                                    <th colspan="2">P.M.</th>
-                                    <th colspan="2">UNDERTIME</th>
-                                </tr>
-                                <tr>
-                                    <th>Arrival</th>
-                                    <th>Departure</th>
-                                    <th>Arrival</th>
-                                    <th>Departure</th>
-                                    <th>Hours</th>
-                                    <th>Mins.</th>
-                                </tr>
+                                    <tr>
+                                        <th rowspan="2">DAY</th>
+                                        <th colspan="2">A.M.</th>
+                                        <th colspan="2">P.M.</th>
+                                        <th colspan="2">UNDERTIME</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Arrival</th>
+                                        <th>Departure</th>
+                                        <th>Arrival</th>
+                                        <th>Departure</th>
+                                        <th colspan="1">Hours</th>
+                                        <th colspan="1">Mins</th>
+                                    </tr>
                                 </thead>
                                 <tbody>${rowsHtml}</tbody>
                             </table>
-                            <p style="text-align:right;font-weight:bold;font-size:13px;">
-                                Total: ${grandHrs} hrs ${grandMins} mins
+                            <p style="text-align:left;font-weight:bold;font-size:13px;">
+                                Total: _____________________________________
                             </p>
                             <div class="footer">
                                 <p>I certify on my honor that the above is a true and correct report of the hours of work performed, record of which was made during the time of arrival at and departure from office.</p>
@@ -359,15 +369,34 @@
                 }
 
                 // Generate 4 DTR copies
-                formsContainer.innerHTML = buildForm() + buildForm() + buildForm() + buildForm();
+                formsContainer.innerHTML = buildForm(1) + buildForm(2) + buildForm(3) + buildForm(4);
+
+                // Attach listeners for sync + recompute
+                formsContainer.querySelectorAll("td[contenteditable=true]").forEach(cell => {
+                    cell.addEventListener("input", (e) => {
+                        const day = cell.getAttribute("data-day");
+                        const field = cell.getAttribute("data-field");
+                        const newValue = cell.innerText.trim();
+
+                        // sync value to other cells (same day + field)
+                        formsContainer.querySelectorAll(`td[data-day="${day}"][data-field="${field}"]`).forEach(otherCell => {
+                            if (otherCell !== cell) otherCell.innerText = newValue;
+                        });
+
+                        // recompute totals for all rows with this day
+                        formsContainer.querySelectorAll(`tr[data-day="${day}"]`).forEach(tr => {
+                            computeRowTotal(tr);
+                        });
+                    });
+                });
+
+                // Initial compute for all rows
+                formsContainer.querySelectorAll("tbody tr").forEach(tr => computeRowTotal(tr));
 
                 progressModal.hide();
             };
-
             fileReader.readAsArrayBuffer(file);
         });
-
-    </script>
-    
+    </script>    
 </body>
 </html>
