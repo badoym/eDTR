@@ -237,6 +237,44 @@
                     period = `${period} ${year}`;
                 }
 
+                // --- Extract all dates and get the first & last day ---
+                const allDates = [...textContent.matchAll(/\d{2}\/(\d{2})\/(\d{4})/g)];
+                if (allDates.length > 0) {
+                    // extract all day numbers and year
+                    const days = allDates.map(m => parseInt(m[1]));
+                    const minDay = Math.min(...days);
+                    const maxDay = Math.max(...days);
+                    const year = parseInt(allDates[0][2]);
+
+                    // get current month name from first valid date
+                    const firstDate = allDates[0][0]; // e.g. "10/02/2025"
+                    const monthNum = parseInt(firstDate.split("/")[0]);
+                    const monthNames = [
+                        "January", "February", "March", "April", "May", "June",
+                        "July", "August", "September", "October", "November", "December"
+                    ];
+                    const monthName = monthNames[monthNum - 1];
+
+                    // Determine the cutoff range based on DTR pattern
+                    let startDay = minDay;
+                    let endDay = maxDay;
+
+                    // Adjust to the nearest cutoff ranges (1–15 or 16–31)
+                    if (maxDay <= 15) {
+                        startDay = 1;
+                        endDay = 15;
+                    } else if (minDay >= 16) {
+                        startDay = 16;
+                        endDay = 31;
+                    } else if (minDay === 1 && (maxDay === 30 || maxDay === 31)) {
+                        startDay = 1;
+                        endDay = maxDay; // full month
+                    }
+
+                    // Format final period output
+                    period = `${monthName} ${startDay} - ${endDay}, ${year}`;
+                }
+
                 const rows = textContent.match(/\d{7}\s+\w+\s+\d{2}\/\d{2}\/\d{4}.*?(?=\d{7}|$)/gs) || [];
                 let logsByDay = {};
 
