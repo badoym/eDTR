@@ -278,67 +278,61 @@
                 const rows = textContent.match(/\d{7}\s+\w+\s+\d{2}\/\d{2}\/\d{4}.*?(?=\d{7}|$)/gs) || [];
                 let logsByDay = {};
 
+                function timeToMinutes(timeStr) {
+                    if (!timeStr) return null;
+                    const [hm, ap] = timeStr.split(" ");
+                    let [h, m] = hm.split(":").map(Number);
+                    if (ap === "PM" && h !== 12) h += 12;
+                    if (ap === "AM" && h === 12) h = 0;
+                    return h * 60 + m;
+                }
+
                 rows.forEach(r => {
                     const parts = r.trim().split(/\s+/);
                     const date = parts[2];
                     const dayNum = parseInt(date.split('/')[1]);
-                    const timeStr = parts[3] + " " + parts[4]; // keep with AM/PM
+                    const timeStr = parts[3] + " " + parts[4];
                     const mode = parts[5];
 
                     if (!logsByDay[dayNum]) logsByDay[dayNum] = { amIn: '', amOut: '', pmIn: '', pmOut: '' };
 
                     let [hm, ap] = [parts[3], parts[4]];
                     let [h, m] = hm.split(':').map(Number);
-
                     if (ap === "PM" && h !== 12) h += 12;
                     if (ap === "AM" && h === 12) h = 0;
                     const hour24 = h;
 
+                    // --- Function to check duplicates or 1-minute gap ---
+                    function isDuplicateOrClose(existing, candidate) {
+                        if (!existing) return false;
+                        const diff = Math.abs(timeToMinutes(existing) - timeToMinutes(candidate));
+                        return diff <= 1; // consider same or 1 minute difference as duplicate
+                    }
+
                     if (mode === "In") {
-                        if (hour24 < 12) logsByDay[dayNum].amIn = timeStr;
-                        else logsByDay[dayNum].pmIn = timeStr;
+                        if (hour24 < 12) {
+                            if (!isDuplicateOrClose(logsByDay[dayNum].amIn, timeStr))
+                                logsByDay[dayNum].amIn ||= timeStr;
+                        } else {
+                            if (!isDuplicateOrClose(logsByDay[dayNum].pmIn, timeStr))
+                                logsByDay[dayNum].pmIn ||= timeStr;
+                        }
                     } else if (mode === "Out") {
-                        if (hour24 < 13) logsByDay[dayNum].amOut = timeStr;
-                        else logsByDay[dayNum].pmOut = timeStr;
+                        if (hour24 < 13) {
+                            if (!isDuplicateOrClose(logsByDay[dayNum].amOut, timeStr))
+                                logsByDay[dayNum].amOut ||= timeStr;
+                        } else {
+                            if (!isDuplicateOrClose(logsByDay[dayNum].pmOut, timeStr))
+                                logsByDay[dayNum].pmOut ||= timeStr;
+                        }
                     }
                 });
 
+
                 // --- NEW: Helper functions
-                function toMinutes(str) {
-                    if (!str) return null;
-                    let match = str.trim().match(/^(\d{1,2}):(\d{2})(?:\s*(AM|PM))?$/i);
-                    if (!match) return null;
-
-                    let h = parseInt(match[1], 10);
-                    let m = parseInt(match[2], 10);
-                    let ap = match[3] ? match[3].toUpperCase() : null;
-
-                    if (ap === "PM" && h !== 12) h += 12;
-                    if (ap === "AM" && h === 12) h = 0;
-
-                    return h * 60 + m;
-                }
-
-                function computeRowTotal(tr) {
-                    const amIn = tr.querySelector(".amIn").innerText.trim();
-                    const amOut = tr.querySelector(".amOut").innerText.trim();
-                    const pmIn = tr.querySelector(".pmIn").innerText.trim();
-                    const pmOut = tr.querySelector(".pmOut").innerText.trim();
-
-                    let totalMin = 0;
-                    let amInM = toMinutes(amIn), amOutM = toMinutes(amOut);
-                    let pmInM = toMinutes(pmIn), pmOutM = toMinutes(pmOut);
-
-                    if (amInM !== null && amOutM !== null) totalMin += (amOutM - amInM);
-                    if (pmInM !== null && pmOutM !== null) totalMin += (pmOutM - pmInM);
-
-                    if (totalMin > 0) {
-                        const hrs = Math.floor(totalMin / 60);
-                        const mins = totalMin % 60;
-                        tr.querySelector(".total").innerText = `${hrs}:${mins.toString().padStart(2, "0")}`;
-                    } else {
-                        tr.querySelector(".total").innerText = "";
-                    }
+                function stripAMPM(timeStr) {
+                    if (!timeStr) return "";
+                    return timeStr.replace(/\s*(AM|PM)$/i, ""); // remove AM/PM
                 }
 
                 function buildForm(copyIndex) {
@@ -349,19 +343,19 @@
                             <tr data-day="${d}">
                                 <td>${d}</td>
                                 <td class="amIn" contenteditable="true" data-day="${d}" data-field="amIn" data-fulltime="${log.amIn || ''}">
-                                    ${(log.amIn || '')}
+                                    ${stripAMPM(log.amIn || '')}
                                 </td>
                                 <td class="amOut" contenteditable="true" data-day="${d}" data-field="amOut">
-                                    ${log.amOut || ''}
+                                    ${stripAMPM(log.amOut || '')}
                                 </td>
                                 <td class="pmIn" contenteditable="true" data-day="${d}" data-field="pmIn">
-                                    ${log.pmIn || ''}
+                                    ${stripAMPM(log.pmIn || '')}
                                 </td>
                                 <td class="pmOut" contenteditable="true" data-day="${d}" data-field="pmOut">
-                                    ${log.pmOut || ''}
+                                    ${stripAMPM(log.pmOut || '')}
                                 </td>
-                                <td class="total"></td>
-                                <td class="remarks" contenteditable="true" data-day="${d}" data-field="remarks"></td>
+                                <td class="remarks" contenteditable="false" data-day="${d}" data-field="remarks"></td>
+                                <td></td>
                             </tr>`;
                     }
 
@@ -392,9 +386,6 @@
                                 </thead>
                                 <tbody>${rowsHtml}</tbody>
                             </table>
-                            <p style="text-align:left;font-weight:bold;font-size:13px;">
-                                Total: _____________________________________
-                            </p>
                             <div class="footer">
                                 <p>I certify on my honor that the above is a true and correct report of the hours of work performed, record of which was made during the time of arrival at and departure from office.</p>
                             </div>
@@ -409,29 +400,22 @@
                 // Generate 4 DTR copies
                 formsContainer.innerHTML = buildForm(1) + buildForm(2) + buildForm(3) + buildForm(4);
 
-                // Attach listeners for sync + recompute
+                // Sync content across forms
                 formsContainer.querySelectorAll("td[contenteditable=true]").forEach(cell => {
                     cell.addEventListener("input", (e) => {
                         const day = cell.getAttribute("data-day");
                         const field = cell.getAttribute("data-field");
                         const newValue = cell.innerText.trim();
 
-                        // sync value to other cells (same day + field)
+                        // sync value to other copies
                         formsContainer.querySelectorAll(`td[data-day="${day}"][data-field="${field}"]`).forEach(otherCell => {
                             if (otherCell !== cell) otherCell.innerText = newValue;
-                        });
-
-                        // recompute totals for all rows with this day
-                        formsContainer.querySelectorAll(`tr[data-day="${day}"]`).forEach(tr => {
-                            computeRowTotal(tr);
                         });
                     });
                 });
 
-                // Initial compute for all rows
-                formsContainer.querySelectorAll("tbody tr").forEach(tr => computeRowTotal(tr));
-
                 progressModal.hide();
+
             };
             fileReader.readAsArrayBuffer(file);
         });
