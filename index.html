@@ -365,7 +365,15 @@
                             <h2 style="text-align:center;font-size:11px;">DAILY TIME RECORD</h2>
                             <h4 style="text-align:center;font-size:15px;font-weight: bold;text-decoration: underline;">${empName}</h4>
                             <h4 style="text-align:center;font-size:7px;">Name</h4>
-                            <h4 style="text-align:left;font-size:11px;">For the month of <span style="text-decoration: underline;font-size:15px;">${period}</span></h4>
+                            <h4 style="text-align:left;font-size:11px;">
+                                For the month of 
+                                <span class="periodRange"
+                                    contenteditable="true"
+                                    data-field="period"
+                                    style="text-decoration: underline;font-size:15px;">
+                                ${period}
+                                </span>
+                            </h4>
                             <p style="text-align:left;font-size:10px;">Official hours for arrival (Regular days) <br> and departure (Saturdays & Sundays)</p>
                             <table style="margin-top: -15px">
                                 <thead>
@@ -415,6 +423,23 @@
                             if (otherCell !== cell) otherCell.innerText = newValue;
                         });
                     });
+                });
+
+                // Sync Date Range across all copies
+                formsContainer.querySelectorAll(".periodRange").forEach(span => {
+
+                    span.addEventListener("input", () => {
+
+                        const value = span.innerText.trim();
+
+                        formsContainer.querySelectorAll(".periodRange").forEach(other => {
+                            if (other !== span) {
+                                other.innerText = value;
+                            }
+                        });
+
+                    });
+
                 });
 
                 progressModal.hide();
