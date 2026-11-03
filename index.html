@@ -237,6 +237,9 @@
                     period = `${period} ${year}`;
                 }
 
+                let dtrMonth = null; // 0-based month, used to detect Saturdays/Sundays
+                let dtrYear = null;
+
                 // --- Extract all dates and get the first & last day ---
                 const allDates = [...textContent.matchAll(/\d{2}\/(\d{2})\/(\d{4})/g)];
                 if (allDates.length > 0) {
@@ -254,6 +257,8 @@
                         "July", "August", "September", "October", "November", "December"
                     ];
                     const monthName = monthNames[monthNum - 1];
+                    dtrMonth = monthNum - 1;
+                    dtrYear = year;
 
                     // Determine the cutoff range based on DTR pattern
                     let startDay = minDay;
@@ -335,25 +340,39 @@
                     return timeStr.replace(/\s*(AM|PM)$/i, ""); // remove AM/PM
                 }
 
+                // Returns "SATURDAY" / "SUNDAY" for a valid day of the month, otherwise ""
+                function weekendName(d) {
+                    if (dtrMonth === null) return "";
+                    const date = new Date(dtrYear, dtrMonth, d);
+                    if (date.getMonth() !== dtrMonth) return ""; // e.g. day 31 in a 30-day month
+                    const dow = date.getDay();
+                    return dow === 6 ? "SATURDAY" : dow === 0 ? "SUNDAY" : "";
+                }
+
                 function buildForm(copyIndex) {
                     let rowsHtml = "";
                     for (let d = 1; d <= 31; d++) {
                         const log = logsByDay[d] || {};
+                        const hasAm = !!(log.amIn || log.amOut);
+                        const hasPm = !!(log.pmIn || log.pmOut);
+                        const dayName = weekendName(d);
+
+                        const cell = (field, span = 1) => `
+                                <td class="${field}" ${span > 1 ? `colspan="${span}"` : ''} contenteditable="true" data-day="${d}" data-field="${field}" ${field === 'amIn' ? `data-fulltime="${log.amIn || ''}"` : ''}>${stripAMPM(log[field] || '')}</td>`;
+
+                        let timeCells;
+                        if (!hasAm && !hasPm) {
+                            // No In/Out all day: one merged cell, labelled on Saturday/Sunday
+                            timeCells = `
+                                <td class="dayoff" colspan="4" contenteditable="true" data-day="${d}" data-field="dayoff">${dayName}</td>`;
+                        } else {
+                            // Any In/Out in the day keeps all 4 cells
+                            timeCells = cell('amIn') + cell('amOut') + cell('pmIn') + cell('pmOut');
+                        }
+
                         rowsHtml += `
-                            <tr data-day="${d}">
-                                <td>${d}</td>
-                                <td class="amIn" contenteditable="true" data-day="${d}" data-field="amIn" data-fulltime="${log.amIn || ''}">
-                                    ${stripAMPM(log.amIn || '')}
-                                </td>
-                                <td class="amOut" contenteditable="true" data-day="${d}" data-field="amOut">
-                                    ${stripAMPM(log.amOut || '')}
-                                </td>
-                                <td class="pmIn" contenteditable="true" data-day="${d}" data-field="pmIn">
-                                    ${stripAMPM(log.pmIn || '')}
-                                </td>
-                                <td class="pmOut" contenteditable="true" data-day="${d}" data-field="pmOut">
-                                    ${stripAMPM(log.pmOut || '')}
-                                </td>
+                            <tr data-day="${d}" style="height:18px;line-height:1;">
+                                <td>${d}</td>${timeCells}
                                 <td class="remarks" contenteditable="false" data-day="${d}" data-field="remarks"></td>
                                 <td></td>
                             </tr>`;
