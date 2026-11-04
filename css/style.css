@@ -76,7 +76,8 @@ tbody td.dayoff {
 }
 
 .signature {
-    margin-top: 15px;
+    margin-top: auto; /* pin to the bottom of the form */
+    padding-bottom: 6px;
     text-align: center;
     font-size: 10px;
 }
@@ -114,6 +115,15 @@ tbody td.dayoff {
         size: legal landscape;
         margin: 0;
         page-break-after: always;
+    }
+
+    /* Legal landscape is 8.5in tall; body zoom is 80%, so fill 8.5 / 0.8 on paper */
+    .dtr, .instr-copy {
+        height: 9.9in;
+    }
+
+    tbody tr {
+        height: 20px !important;
     }
 
     .upload-box,
