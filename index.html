@@ -13,6 +13,11 @@
         <label for="pdfUpload" class="form-label fw-bold">Upload your DTR PDF</label>
         <input type="file" id="pdfUpload" accept="application/pdf" class="form-control mb-3" style="max-width:300px;">
         <button class="btn btn-primary" onclick="window.print()">🖨 Print All</button>
+        <div class="mt-2">
+            <button id="mergeBtn" class="btn btn-outline-secondary btn-sm" disabled>Merge cells</button>
+            <button id="splitBtn" class="btn btn-outline-secondary btn-sm" disabled>Split cells</button>
+        </div>
+        <small class="text-muted mt-2">Tip: drag across time cells (or click a day number) to select them, then press Merge.</small>
     </div>
 
     <div class="page" id="formsContainer"></div>
@@ -20,8 +25,8 @@
     <div class="instructions">
         <div class="page">
             <div class="instr-copy">
-                <h4 style="text-align:center; text-decoration: underline;">INSTRUCTIONS</h4>
-                <p style="font-size:12px; text-align:justify;">
+                <h4 class="instr-title">INSTRUCTIONS</h4>
+                <p class="instr-text">
                     Civil Service Form 48, after completion, should be filed in the records of the Bureau or Office which submits the 
                     monthly report on Civil Service Form No.3 to the Bureau of Civil Service. <br><br>
 
@@ -42,23 +47,17 @@
                     of undertime of each person for each day.  Officers or employees serving i the filed or on the water need not be 
                     required to keep a daily record, but all absences of such employees muyst be included tn the monthly report of changes 
                     and absences. Falsification of time records will render the offending officer or employee lible to summary removal 
-                    from the service and criminal prosecution." <br><br>
-                    <br><br>
-                    <br><br>
-                    <br><br>
-                    <br><br>
-                    <br><br>
-                    <br><br>
-                    <br><br>
-                    <br><br>
+                    from the service and criminal prosecution."
+                </p>
+                <p class="instr-text instr-note">
                     (Note A record made from memory or sometime subsequent to the occurrence of an event is not reliable. Non- observance 
                     of office hours deprives the employee of the leave privilegies althou he may have rendered overtime service. Where 
                     service rendered outside of the Office for the whole morning or afternoon notation to that office should be made clearly.).
                 </p>
             </div>
             <div class="instr-copy">
-                <h4 style="text-align:center; text-decoration: underline;">INSTRUCTIONS</h4>
-                <p style="font-size:12px; text-align:justify;">
+                <h4 class="instr-title">INSTRUCTIONS</h4>
+                <p class="instr-text">
                     Civil Service Form 48, after completion, should be filed in the records of the Bureau or Office which submits the 
                     monthly report on Civil Service Form No.3 to the Bureau of Civil Service. <br><br>
 
@@ -79,23 +78,17 @@
                     of undertime of each person for each day.  Officers or employees serving i the filed or on the water need not be 
                     required to keep a daily record, but all absences of such employees muyst be included tn the monthly report of changes 
                     and absences. Falsification of time records will render the offending officer or employee lible to summary removal 
-                    from the service and criminal prosecution." <br><br>
-                    <br><br>
-                    <br><br>
-                    <br><br>
-                    <br><br>
-                    <br><br>
-                    <br><br>
-                    <br><br>
-                    <br><br>
+                    from the service and criminal prosecution."
+                </p>
+                <p class="instr-text instr-note">
                     (Note A record made from memory or sometime subsequent to the occurrence of an event is not reliable. Non- observance 
                     of office hours deprives the employee of the leave privilegies althou he may have rendered overtime service. Where 
                     service rendered outside of the Office for the whole morning or afternoon notation to that office should be made clearly.).
                 </p>
             </div>
             <div class="instr-copy">
-                <h4 style="text-align:center; text-decoration: underline;">INSTRUCTIONS</h4>
-                <p style="font-size:12px; text-align:justify;">
+                <h4 class="instr-title">INSTRUCTIONS</h4>
+                <p class="instr-text">
                     Civil Service Form 48, after completion, should be filed in the records of the Bureau or Office which submits the 
                     monthly report on Civil Service Form No.3 to the Bureau of Civil Service. <br><br>
 
@@ -116,23 +109,17 @@
                     of undertime of each person for each day.  Officers or employees serving i the filed or on the water need not be 
                     required to keep a daily record, but all absences of such employees muyst be included tn the monthly report of changes 
                     and absences. Falsification of time records will render the offending officer or employee lible to summary removal 
-                    from the service and criminal prosecution." <br><br>
-                    <br><br>
-                    <br><br>
-                    <br><br>
-                    <br><br>
-                    <br><br>
-                    <br><br>
-                    <br><br>
-                    <br><br>
+                    from the service and criminal prosecution."
+                </p>
+                <p class="instr-text instr-note">
                     (Note A record made from memory or sometime subsequent to the occurrence of an event is not reliable. Non- observance 
                     of office hours deprives the employee of the leave privilegies althou he may have rendered overtime service. Where 
                     service rendered outside of the Office for the whole morning or afternoon notation to that office should be made clearly.).
                 </p>
             </div>
             <div class="instr-copy">
-                <h4 style="text-align:center; text-decoration: underline;">INSTRUCTIONS</h4>
-                <p style="font-size:12px; text-align:justify;">
+                <h4 class="instr-title">INSTRUCTIONS</h4>
+                <p class="instr-text">
                     Civil Service Form 48, after completion, should be filed in the records of the Bureau or Office which submits the 
                     monthly report on Civil Service Form No.3 to the Bureau of Civil Service. <br><br>
 
@@ -153,15 +140,9 @@
                     of undertime of each person for each day.  Officers or employees serving i the filed or on the water need not be 
                     required to keep a daily record, but all absences of such employees muyst be included tn the monthly report of changes 
                     and absences. Falsification of time records will render the offending officer or employee lible to summary removal 
-                    from the service and criminal prosecution." <br><br>
-                    <br><br>
-                    <br><br>
-                    <br><br>
-                    <br><br>
-                    <br><br>
-                    <br><br>
-                    <br><br>
-                    <br><br>
+                    from the service and criminal prosecution."
+                </p>
+                <p class="instr-text instr-note">
                     (Note A record made from memory or sometime subsequent to the occurrence of an event is not reliable. Non- observance 
                     of office hours deprives the employee of the leave privilegies althou he may have rendered overtime service. Where 
                     service rendered outside of the Office for the whole morning or afternoon notation to that office should be made clearly.).
@@ -350,52 +331,72 @@
                     return dow === 6 ? "SATURDAY" : dow === 0 ? "SUNDAY" : "";
                 }
 
+                // Merge groups per day over the 4 time columns (0=amIn, 1=amOut, 2=pmIn, 3=pmOut):
+                // merges[d] = [{ s, e, text }]
+                const TIME_FIELDS = ["amIn", "amOut", "pmIn", "pmOut"];
+                const merges = {};
+
+                // Saturday/Sunday with no In/Out start merged and labelled; the user can still split them
+                for (let d = 1; d <= 31; d++) {
+                    const log = logsByDay[d] || {};
+                    const hasLog = log.amIn || log.amOut || log.pmIn || log.pmOut;
+                    if (weekendName(d) && !hasLog) merges[d] = [{ s: 0, e: 3, text: weekendName(d) }];
+                }
+
+                function rowHtml(d) {
+                    const log = logsByDay[d] || {};
+                    const groups = merges[d] || [];
+                    let timeCells = "";
+
+                    for (let i = 0; i < 4;) {
+                        const g = groups.find(g => g.s === i);
+                        if (g) {
+                            const cls = g.text && g.text === weekendName(d) ? "dayoff" : "merged";
+                            timeCells += `
+                                <td class="${cls}" colspan="${g.e - g.s + 1}" contenteditable="true" data-day="${d}" data-field="m${g.s}" data-s="${g.s}" data-e="${g.e}">${g.text}</td>`;
+                            i = g.e + 1;
+                        } else {
+                            const f = TIME_FIELDS[i];
+                            timeCells += `
+                                <td class="${f}" contenteditable="true" data-day="${d}" data-field="${f}" data-s="${i}" data-e="${i}" ${f === 'amIn' ? `data-fulltime="${log.amIn || ''}"` : ''}>${stripAMPM(log[f] || '')}</td>`;
+                            i++;
+                        }
+                    }
+
+                    return `
+                                <td class="daycell" title="Click to select this row's time cells">${d}</td>${timeCells}
+                                <td class="remarks" contenteditable="false" data-day="${d}" data-field="remarks"></td>
+                                <td></td>`;
+                }
+
                 function buildForm(copyIndex) {
                     let rowsHtml = "";
                     for (let d = 1; d <= 31; d++) {
-                        const log = logsByDay[d] || {};
-                        const hasAm = !!(log.amIn || log.amOut);
-                        const hasPm = !!(log.pmIn || log.pmOut);
-                        const dayName = weekendName(d);
-
-                        const cell = (field, span = 1) => `
-                                <td class="${field}" ${span > 1 ? `colspan="${span}"` : ''} contenteditable="true" data-day="${d}" data-field="${field}" ${field === 'amIn' ? `data-fulltime="${log.amIn || ''}"` : ''}>${stripAMPM(log[field] || '')}</td>`;
-
-                        let timeCells;
-                        if (!hasAm && !hasPm) {
-                            // No In/Out all day: one merged cell, labelled on Saturday/Sunday
-                            timeCells = `
-                                <td class="dayoff" colspan="4" contenteditable="true" data-day="${d}" data-field="dayoff">${dayName}</td>`;
-                        } else {
-                            // Any In/Out in the day keeps all 4 cells
-                            timeCells = cell('amIn') + cell('amOut') + cell('pmIn') + cell('pmOut');
-                        }
-
                         rowsHtml += `
-                            <tr data-day="${d}" style="height:18px;line-height:1;">
-                                <td>${d}</td>${timeCells}
-                                <td class="remarks" contenteditable="false" data-day="${d}" data-field="remarks"></td>
-                                <td></td>
+                            <tr data-day="${d}" style="height:18px;line-height:1;">${rowHtml(d)}
                             </tr>`;
                     }
 
                     return `
                         <div class="dtr">
-                            <h5 style="text-align:left;font-size:7px;">Civil Service Form No. 48</h5>
-                            <h2 style="text-align:center;font-size:11px;">DAILY TIME RECORD</h2>
-                            <h4 style="text-align:center;font-size:15px;font-weight: bold;text-decoration: underline;">${empName}</h4>
-                            <h4 style="text-align:center;font-size:7px;">Name</h4>
-                            <h4 style="text-align:left;font-size:11px;">
-                                For the month of 
+                            <h5 class="form-no">Civil Service Form No. 48</h5>
+                            <h2 class="form-title">DAILY TIME RECORD</h2>
+                            <h4 class="emp-name">${empName}</h4>
+                            <h4 class="emp-label">Name</h4>
+                            <h4 class="month-line">
+                                For the month of
                                 <span class="periodRange"
                                     contenteditable="true"
-                                    data-field="period"
-                                    style="text-decoration: underline;font-size:15px;">
+                                    data-field="period">
                                 ${period}
                                 </span>
                             </h4>
-                            <p style="text-align:left;font-size:10px;">Official hours for arrival (Regular days) <br> and departure (Saturdays & Sundays)</p>
-                            <table style="margin-top: -15px">
+                            <p class="hours-note">Official hours for arrival (Regular days) <br> and departure (Saturdays & Sundays)</p>
+                            <div class="table-wrap">
+                            <table class="dtr-table">
+                                <colgroup>
+                                    <col style="width:8%"><col style="width:18%"><col style="width:18%"><col style="width:18%"><col style="width:18%"><col style="width:10%"><col style="width:10%">
+                                </colgroup>
                                 <thead>
                                     <tr>
                                         <th rowspan="2">DAY</th>
@@ -414,7 +415,8 @@
                                 </thead>
                                 <tbody>${rowsHtml}</tbody>
                             </table>
-                            <p style="text-align:left;font-weight:bold;font-size:13px;">
+                            </div>
+                            <p class="total">
                                 Total: _____________________________________
                             </p>
                             <div class="footer">
@@ -432,18 +434,134 @@
                 formsContainer.innerHTML = buildForm(1) + buildForm(2) + buildForm(3) + buildForm(4);
 
                 // Sync content across forms
-                formsContainer.querySelectorAll("td[contenteditable=true]").forEach(cell => {
-                    cell.addEventListener("input", (e) => {
-                        const day = cell.getAttribute("data-day");
-                        const field = cell.getAttribute("data-field");
-                        const newValue = cell.innerText.trim();
+                // (delegated, so it keeps working after cells are merged / split)
+                // Handlers are assigned (not added) so uploading another PDF doesn't stack them.
+                formsContainer.oninput = (e) => {
+                    const cell = e.target.closest("td[contenteditable=true]");
+                    if (!cell) return;
+                    const day = cell.getAttribute("data-day");
+                    const field = cell.getAttribute("data-field");
+                    const newValue = cell.innerText.trim();
 
-                        // sync value to other copies
-                        formsContainer.querySelectorAll(`td[data-day="${day}"][data-field="${field}"]`).forEach(otherCell => {
-                            if (otherCell !== cell) otherCell.innerText = newValue;
-                        });
+                    // remember the value so a merge / split doesn't lose it
+                    if (/^m\d$/.test(field)) {
+                        const g = (merges[day] || []).find(g => g.s === +field[1]);
+                        if (g) g.text = newValue;
+                    } else {
+                        (logsByDay[day] ||= {})[field] = newValue;
+                    }
+
+                    // sync value to other copies
+                    formsContainer.querySelectorAll(`td[data-day="${day}"][data-field="${field}"]`).forEach(otherCell => {
+                        if (otherCell !== cell) otherCell.innerText = newValue;
                     });
-                });
+                };
+
+                // --- Excel-style selection: click a day number or drag across time cells, then Merge ---
+                const mergeBtn = document.getElementById("mergeBtn");
+                const splitBtn = document.getElementById("splitBtn");
+                let sel = null;       // { day, s, e, form }
+                let dragStart = null; // { td, form, day }
+
+                // Grow [s, e] so it never cuts through an existing merged group
+                function expand(day, s, e) {
+                    let changed = true;
+                    while (changed) {
+                        changed = false;
+                        (merges[day] || []).forEach(g => {
+                            if (g.s <= e && g.e >= s && (g.s < s || g.e > e)) {
+                                s = Math.min(s, g.s);
+                                e = Math.max(e, g.e);
+                                changed = true;
+                            }
+                        });
+                    }
+                    return [s, e];
+                }
+
+                function paintSel() {
+                    formsContainer.querySelectorAll("td.sel").forEach(t => t.classList.remove("sel"));
+                    if (sel) {
+                        const tr = sel.form.querySelector(`tr[data-day="${sel.day}"]`);
+                        tr.querySelectorAll("td[data-s]").forEach(td => {
+                            if (+td.dataset.s >= sel.s && +td.dataset.e <= sel.e) td.classList.add("sel");
+                        });
+                    }
+                    mergeBtn.disabled = !(sel && sel.s < sel.e);
+                    splitBtn.disabled = !(sel && (merges[sel.day] || []).some(g => g.s >= sel.s && g.e <= sel.e));
+                }
+
+                function setSel(form, day, s, e) {
+                    [s, e] = expand(day, s, e);
+                    sel = { day, s, e, form };
+                    paintSel();
+                }
+
+                function renderDay(d) {
+                    formsContainer.querySelectorAll(`tr[data-day="${d}"]`).forEach(tr => {
+                        tr.innerHTML = rowHtml(d);
+                    });
+                    paintSel();
+                }
+
+                formsContainer.onmousedown = (e) => {
+                    const td = e.target.closest("td");
+                    if (!td || e.button !== 0) return;
+                    const form = td.closest(".dtr");
+                    const day = td.parentElement.dataset.day;
+
+                    if (td.classList.contains("daycell")) {
+                        e.preventDefault();
+                        setSel(form, day, 0, 3); // like clicking a row header in Excel
+                        return;
+                    }
+                    sel = null;
+                    paintSel();
+                    dragStart = td.dataset.s !== undefined ? { td, form, day } : null;
+                };
+
+                formsContainer.onmouseover = (e) => {
+                    if (!dragStart) return;
+                    const td = e.target.closest("td[data-s]");
+                    if (!td || td.closest(".dtr") !== dragStart.form || td.parentElement.dataset.day !== dragStart.day) return;
+                    if (td === dragStart.td && !sel) return; // still inside the first cell: just typing
+
+                    const s = Math.min(+dragStart.td.dataset.s, +td.dataset.s);
+                    const e2 = Math.max(+dragStart.td.dataset.e, +td.dataset.e);
+                    setSel(dragStart.form, dragStart.day, s, e2);
+                    window.getSelection().removeAllRanges(); // no text highlight while dragging cells
+                };
+
+                document.onmouseup = () => { dragStart = null; };
+
+                mergeBtn.onclick = () => {
+                    if (!sel || sel.s === sel.e) return;
+                    const { day, s, e } = sel;
+                    const log = logsByDay[day] || {};
+                    const groups = merges[day] || [];
+
+                    // keep what is already in the cells: times, or text of groups being absorbed
+                    const parts = [];
+                    for (let i = s; i <= e;) {
+                        const g = groups.find(g => g.s === i);
+                        if (g) { parts.push(g.text); i = g.e + 1; }
+                        else { parts.push(stripAMPM(log[TIME_FIELDS[i]] || "")); i++; }
+                    }
+                    let text = parts.filter(Boolean).join(" ");
+                    if (!text && s === 0 && e === 3) text = weekendName(day); // label Saturday/Sunday
+
+                    merges[day] = groups.filter(g => g.e < s || g.s > e).concat({ s, e, text }).sort((a, b) => a.s - b.s);
+                    renderDay(day);
+                };
+
+                splitBtn.onclick = () => {
+                    if (!sel) return;
+                    const { day, s, e } = sel;
+                    merges[day] = (merges[day] || []).filter(g => g.e < s || g.s > e);
+                    renderDay(day);
+                };
+
+                paintSel();
 
                 // Sync Date Range across all copies
                 formsContainer.querySelectorAll(".periodRange").forEach(span => {
